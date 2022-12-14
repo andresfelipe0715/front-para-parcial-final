@@ -11,7 +11,7 @@ function listarCategorias(){
             'Authorization': localStorage.token
         },
     }
-    fetch(urlApi2+"/categorias/categorias",settings)
+    fetch(urlApi2+"/categorias",settings)
     .then(response => response.json())
     .then(function(data){
         
@@ -36,10 +36,11 @@ function listarCategorias(){
                 categorias += `
                 
                         <tr>
-                            <th scope="row">${categoria.id}</th>
+                            <th scope="row">${categoria.id_cat}</th>
                             <td>${categoria.nombre}</td>
                             <td>${categoria.descripcion}</td>
-                            <a href="#" onclick="verCategoria('${categoria.id}')" class="btn btn-outline-info">
+                            <td>
+                            <a href="#" onclick="verCategoria('${categoria.id_cat}')" class="btn btn-outline-info">
                                 <i class="fa-solid fa-eye"></i>
                             </a>
                             </td>
@@ -52,11 +53,11 @@ function listarCategorias(){
                 </table>
             `;
             document.getElementById("datos").innerHTML = categorias;
-    })
+  })
 }
 
 
-function verCategoria(id){
+function verCategoria(id_cat){
     validaToken();
     var settings={
         method: 'GET',
@@ -66,7 +67,7 @@ function verCategoria(id){
             'Authorization': localStorage.token
         },
     }
-    fetch(urlApi2+"/categoria/"+id,settings)
+    fetch(urlApi2+"/categoria/"+id_cat,settings)
     .then(response => response.json())
     .then(function(categoria){
             var cadena='';
@@ -77,7 +78,7 @@ function verCategoria(id){
                 </div>
                 <ul class="list-group">
                     <li class="list-group-item">Nombre: ${categoria.nombre}</li>
-                    <li class="list-group-item">Apellido: ${categoria.descripcion}</li>
+                    <li class="list-group-item">descripcion: ${categoria.descripcion}</li>
 
                 </ul>`;
               
@@ -104,14 +105,14 @@ function alertas(mensaje,tipo){
     document.getElementById("alerta").innerHTML = alerta;
 }
 
-function registerForm(auth=false){
+function registerForm2(auth=false){
     cadena = `
             <div class="p-3 mb-2 bg-light text-dark">
                 <h1 class="display-5"><i class="fa-solid fa-user-pen"></i> Registrar Categoria</h1>
             </div>
               
-            <form action="" method="post" id="myFormReg">
-                <input type="hidden" name="id" id="id">
+            <form action="" method="post" id="myFormReg1">
+                <input type="hidden" name="id_cat" id="id_cat">
                 <label for="nombre" class="form-label">nombre</label>
                 <input type="text" class="form-control" name="nombre" id="nombre" required> <br>
                 <label for="descripcion"  class="form-label">descripcion</label>
@@ -124,7 +125,8 @@ function registerForm(auth=false){
 }
 
 async function registrarCategoria(auth=false){
-    var myForm = document.getElementById("myFormReg");
+    validaToken();
+    var myForm = document.getElementById("myFormReg1");
     var formData = new FormData(myForm);
     var jsonData = {};
     for(var [k, v] of formData){//convertimos los datos a json
@@ -135,7 +137,8 @@ async function registrarCategoria(auth=false){
         method: 'POST',
         headers:{
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.token
         },
         body: JSON.stringify(jsonData)
     })
@@ -144,7 +147,7 @@ async function registrarCategoria(auth=false){
         console.log("respuesta peticion", respuesta)
     });
     if(auth){
-        listarUsuarios();
+        listarCategorias();
     }
     alertas("Se ha registrado el categoria exitosamente!",1)
     document.getElementById("contentModal").innerHTML = '';
