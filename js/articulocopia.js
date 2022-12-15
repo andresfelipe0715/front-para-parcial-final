@@ -135,7 +135,7 @@ function registerForm3(auth=false){
 
     cadena = `
             <div class="p-3 mb-2 bg-light text-dark">
-                <h1 class="display-5"><i class="fa-solid fa-user-pen"></i>Registrar Articulo</h1>
+                <h1 class="display-5"><i class="fa-solid fa-user-pen"></i> Registrar Articulo</h1>
             </div>
               
             <form action="" method="post" id="myFormReg2">
@@ -235,78 +235,51 @@ async function registrarArticulo(auth=false){
     modal.hide();
 }
 
-function verModificarArticulo(codigo){
-    validaToken();
-    var settings = {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': localStorage.token
-        },
-    }
-    fetch(urlApi3+"/categorias",settings)
-    .then(response => response.json())
-    .then(function(data){
-
-    cadena = `
-            <div class="p-3 mb-2 bg-light text-dark">
-                <h1 class="display-5"><i class="fa-solid fa-user-pen"></i> Registrar Articulo</h1>
-            </div>
+// function verModificarUsuario(codigo){
+//     validaToken();
+//     var settings={
+//         method: 'GET',
+//         headers:{
+//             'Accept': 'application/json',
+//             'Content-Type': 'application/json',
+//             'Authorization': localStorage.token
+//         },
+//     }
+//     fetch(urlApi3+"/articulo/"+id,settings)
+//     .then(response => response.json())
+//     .then(function(articulo){
+//             var cadena='';
+//             if(articulo){                
+//                 cadena = `
+//                 <div class="p-3 mb-2 bg-light text-dark">
+//                     <h1 class="display-5"><i class="fa-solid fa-user-pen"></i> Modificar Usuario</h1>
+//                 </div>
               
-            <form action="" method="post" id="myFormReg2">
-                <input type="hidden" name="id" id="id">
-                <label for="codigo" class="form-label">codigo</label>
-                <input type="text" class="form-control" name="codigo" id="codigo" required> <br>
-                <label for="nombre"  class="form-label">nombre</label>
-                <input type="text" class="form-control" name="nombre" id="nombre" required> <br>
-                <label for="descripcion"  class="form-label">descripcion</label>
-                <input type="text" class="form-control" name="descripcion" id="descripcion" required> <br>
-                <label for="fechaRegistro" class="form-label">fechaRegistro</label>
-                <input type="date" class="form-control" name="fechaRegistro" id="fechaRegistro" required> <br>
-                <label for="">Categoria:</label>
-                <select class="form-select" name="categoria" id="categoria" required>
-
-                `;for(const Categoria of data){
-                    cadena+=`
-                    <option value="${Categoria.id_cat}">${Categoria.descripcion}</option>
-                    
-                    `;
-
-                }
-                cadena+=`
-                </select>
-
-
-                <label for="stock" class="form-label">stock</label>
-                <input type="text" class="form-control" id="stock" name="stock" required> <br>
-                <label for="precioVenta" class="form-label">precioVenta</label>
-                <input type="text" class="form-control" id="precioVenta" name="precioVenta" required> <br>
-                <label for="precioCompra" class="form-label">precioCompra</label>
-                <input type="precioCompra" class="form-control" id="precioCompra" name="precioCompra" required> <br>
-                
-            </form>`;
-            document.getElementById("contentModal").innerHTML = cadena;
-            var myModal = new bootstrap.Modal(document.getElementById('modalUsuario'))
-            myModal.toggle();
-    })
-}
+//                 <form action="" method="post" id="myForm">
+//                     <input type="hidden" name="id" id="id" value="${usuario.id}">
+//                     <label for="nombre" class="form-label">First Name</label>
+//                     <input type="text" class="form-control" name="nombre" id="nombre" required value="${usuario.nombre}"> <br>
+//                     <label for="apellidos"  class="form-label">Last Name</label>
+//                     <input type="text" class="form-control" name="apellidos" id="apellidos" required value="${usuario.apellidos}"> <br>
+//                     <label for="documento"  class="form-label">document</label>
+//                     <input type="text" class="form-control" name="documento" id="documento" required value="${usuario.documento}"> <br>
+//                     <label for="correo" class="form-label">correo</label>
+//                     <input type="correo" class="form-control" name="correo" id="correo" required value="${usuario.correo}"> <br>
+//                     <label for="password" class="form-label">Password</label>
+//                     <input type="password" class="form-control" id="password" name="password" required> <br>
+//                     <button type="button" class="btn btn-outline-warning" 
+//                         onclick="modificarUsuario('${usuario.id}')">Modificar
+//                     </button>
+//                 </form>`;
+//             }
+//             document.getElementById("contentModal").innerHTML = cadena;
+//             var myModal = new bootstrap.Modal(document.getElementById('modalUsuario'))
+//             myModal.toggle();
+//     })
+// }
 
 
-
-//<button type="button" class="btn btn-outline-warning" 
-                 //   onclick="modificarArticulo('${articulo.codigo}')">Modificar
-//</button> 
-
-
-
-
-
-
-
-
-
-// async function modificarArticulo(codigo){
+// async function modificarUsuario(id){
 //     validaToken();
 //     var myForm = document.getElementById("myForm");
 //     var formData = new FormData(myForm);
@@ -314,7 +287,7 @@ function verModificarArticulo(codigo){
 //     for(var [k, v] of formData){//convertimos los datos a json
 //         jsonData[k] = v;
 //     }
-//     const request = await fetch(urlApi3+"/articulo/"+codigo, {
+//     const request = await fetch(urlApi3+"/usuario/"+id, {
 //         method: 'PUT',
 //         headers:{
 //             'Accept': 'application/json',
@@ -323,8 +296,8 @@ function verModificarArticulo(codigo){
 //         },
 //         body: JSON.stringify(jsonData)
 //     });
-//     listarArticulos();
-//     alertas("Se ha modificado el articulo exitosamente!",1)
+//     listarUsuarios();
+//     alertas("Se ha modificado el usuario exitosamente!",1)
 //     document.getElementById("contentModal").innerHTML = '';
 //     var myModalEl = document.getElementById('modalUsuario')
 //     var modal = bootstrap.Modal.getInstance(myModalEl) // Returns a Bootstrap modal instance

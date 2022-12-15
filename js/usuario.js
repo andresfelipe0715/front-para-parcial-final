@@ -2,6 +2,7 @@
 const urlApi = "http://localhost:9000";//colocar la url con el puerto
 
 async function login(){
+    let correo = document.querySelector('#myForm #correo').value;
     var myForm = document.getElementById("myForm");
     var formData = new FormData(myForm);
     var jsonData = {};
@@ -20,8 +21,32 @@ async function login(){
     if(request.ok){
         const respuesta = await request.text();        
         localStorage.token = respuesta;     
-        location.href= "dashboard.html";
+        localStorage.correo = correo; 
+        buscarUsuario();    
+        setTimeout(function(){
+            location.href= "dashboard.html";
+        }, 1900);
+
     }
+}
+
+async function buscarUsuario(){
+    var settings={
+        method: 'GET',
+        headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.token
+        },
+    }
+    fetch(urlApi+"/usuario/correo/"+localStorage.correo,settings)
+    .then(response => response.json())
+    .then(function(usuario){
+        
+            if(usuario){  
+              localStorage.id=usuario.id;
+            } 
+    })
 }
 
 function listarUsuarios(){
